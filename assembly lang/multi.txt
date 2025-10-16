@@ -1,0 +1,23 @@
+		         add 0 0 1
+				     lw  0 2 mcand
+			       lw  0 3 mplier
+			       lw  0 4 bitmask
+				     lw  0 5 bitcount
+				     lw  0 6 neg1
+loop_check: nand 3 4 7
+				    nand 7 7 7
+				    beq  0 7 bit_is_zero
+				    add  1 2 1
+bit_is_zero:add  2 2 2
+            add  4 4 4
+				    add  6 5 5
+				    beq  5 0 end_loop
+				    beq  0 0 loop_check
+				    noop
+end_loop:   halt
+
+mcand .fill 1001
+mplier .fill 1100
+neg1 .fill -1
+bitcount .fill 15
+bitmask .fill 1
