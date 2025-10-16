@@ -16,9 +16,10 @@ bit_is_zero:        add  2 2 2
 				    noop
 end_loop:   halt
 
-mcand .fill 1001
-mplier .fill 1100
+mcand .fill 32766
+mplier .fill 10383
 neg1 .fill -1
 bitcount .fill 15
 bitmask .fill 1
+
 
