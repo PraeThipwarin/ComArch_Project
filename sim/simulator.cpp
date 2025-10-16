@@ -164,18 +164,19 @@ int main(int argc, char *argv[])
                 break;
             }
             case 6: { // halt (O-type)
+                // นับคำสั่ง halt ด้วย (สำคัญ!)
+                instrCount++;
                 // ทำเหมือนคำสั่งอื่น (pc++) แล้ว "printState อีกครั้งก่อน exit" ตามกติกา
                 state.pc += 1;
                 // รักษา $0 ก่อนพิมพ์สถานะสุดท้าย
                 state.reg[0] = 0;
-                printState(&state);      // ก่อนออก
                 std::printf("machine halted\n");
                 std::printf("total of %lld instructions executed\n", instrCount);
                 std::printf("final state of machine:\n");
                 // ตาม rule (4) เราได้ printState ก่อนออกแล้วบรรทัดบน
                 // บางสภาพแวดล้อมตัวอย่างจะพิมพ์ state อีกครั้งหลังข้อความ;
                 // หากเข้มงวดตาม rule ให้คอมเมนต์บรรทัดต่อไปนี้ออก
-                // printState(&state);
+                printState(&state);
                 return 0;
             }
             case 7: { // noop (O-type)
