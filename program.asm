@@ -1,0 +1,3 @@
+add 0 1 2
+halt
+add 2 2 2

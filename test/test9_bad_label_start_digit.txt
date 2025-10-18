@@ -1,0 +1,2 @@
+1abc add 0 1 2
+halt

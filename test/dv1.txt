@@ -1,0 +1,18 @@
+        lw      0      1      n          # n = 13
+        lw      0      2      d          # d = 4
+        lw      0      6      addr       # load divide function address
+        jalr    6      7                 # call divide
+        halt
+
+divide  add     0      0      3          # $3 = 0 (result)
+loop    nand    2      2      4          # $4 = ~r
+        add     4      0      4          # $4 = -r  (2’s complement)
+        add     1      4      1          # n = n - r
+        beq     1      0      done       # if n == 0, end loop
+        add     3      6      3          # result++
+        beq     0      0      loop       # repeat
+done    jalr    7      0                 # return
+
+n       .fill   13
+d       .fill   4
+addr    .fill   divide

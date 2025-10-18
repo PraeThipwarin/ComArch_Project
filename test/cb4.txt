@@ -1,0 +1,52 @@
+main   lw      0       oneReg      one
+        lw      0       negOneReg   neg1
+        lw      0       funcPtr     combAdr
+        lw      0       1           n
+        lw      0       2           r
+        add     0       0           5
+        jalr    funcPtr     7
+        halt
+
+
+comb   sw      5       7           0
+        add     5       oneReg      5
+        sw      5       1           0
+        add     5       oneReg      5
+        sw      5       2           0
+        add     5       oneReg      5
+        beq     2       0           base
+        beq     1       2           base
+        add     1       negOneReg   1
+        jalr    funcPtr     7
+        sw      5       3           0
+        add     5       oneReg      5
+        add     5       negOneReg   5
+        lw      5       2           0
+        add     5       negOneReg   5
+        lw      5       1           0
+        add     1       negOneReg   1
+        add     2       negOneReg   2
+        jalr    funcPtr     7
+        add     5       negOneReg   5
+        lw      5       4           0
+        add     3       4           3
+        beq     0       0           done
+
+
+base   add     0       oneReg      3
+
+
+done   add     5       negOneReg   5
+        lw      5       2           0
+        add     5       negOneReg   5
+        lw      5       1           0
+        add     5       negOneReg   5
+        lw      5       7           0
+        jalr    7       0
+
+n       .fill   7
+r       .fill   3
+one     .fill   1
+neg1    .fill   -1
+
+stack   .fill   0
