@@ -37,6 +37,14 @@ void printState(stateType *statePtr)
 }
 /* --------------------------------------------------------------- */
 
+static const long long GENERIC_INSTRUCTION_CAP = 10000000LL;
+
+struct ModeConfig {
+    std::string name;
+    int maxProgramWords;
+    long long instructionCap;
+};
+
 static inline int convertNum(int num) {
     /* convert a 16-bit number into a 32-bit signed integer (sign-extend) */
     if (num & (1 << 15)) {
@@ -61,12 +69,41 @@ static inline void assertPCInProgram(int pc, int numMemory) {
 
 int main(int argc, char *argv[])
 {
-    if (argc != 2) {
-        std::fprintf(stderr, "error: usage: %s <machine-code file>\n", argv[0]);
+    ModeConfig modeConfig{"generic", NUMMEMORY, GENERIC_INSTRUCTION_CAP};
+    std::string taskArg;
+    const char* filename = nullptr;
+
+    for (int i = 1; i < argc; ++i) {
+        if (std::strncmp(argv[i], "--task=", 7) == 0) {
+            if (!taskArg.empty()) {
+                std::fprintf(stderr, "error: duplicate --task option\n");
+                return 1;
+            }
+            taskArg = argv[i] + 7;
+        } else if (!filename) {
+            filename = argv[i];
+        } else {
+            std::fprintf(stderr, "error: usage: %s [--task=multiply|--task=comb] <machine-code file>\n", argv[0]);
+            return 1;
+        }
+    }
+
+    if (filename == nullptr) {
+        std::fprintf(stderr, "error: usage: %s [--task=multiply|--task=comb] <machine-code file>\n", argv[0]);
         return 1;
     }
 
-    const char* filename = argv[1];
+    if (!taskArg.empty()) {
+        if (taskArg == "multiply") {
+            modeConfig = ModeConfig{"multiply", 50, 1000};
+        } else if (taskArg == "comb") {
+            modeConfig = ModeConfig{"comb", 45, 5000};
+        } else {
+            std::fprintf(stderr, "error: unknown task mode '%s'\n", taskArg.c_str());
+            return 1;
+        }
+    }
+
     FILE* filePtr = std::fopen(filename, "r");
     if (!filePtr) {
         std::perror("error opening machine-code file");
@@ -93,6 +130,12 @@ int main(int argc, char *argv[])
         // echo แบบตัวอย่างสตาร์ทเตอร์ (ถ้าไม่ต้องการ สามารถคอมเมนต์ออกได้)
         std::printf("memory[%d]=%d\n", state.numMemory, state.mem[state.numMemory]);
         state.numMemory++;
+        if (state.numMemory > modeConfig.maxProgramWords) {
+            std::fprintf(stderr, "error: program length %d exceeds limit %d for task '%s'\n",
+                         state.numMemory, modeConfig.maxProgramWords, modeConfig.name.c_str());
+            std::fclose(filePtr);
+            return 1;
+        }
     }
     std::fclose(filePtr);
 
@@ -207,6 +250,11 @@ int main(int argc, char *argv[])
 
         // นับจำนวนคำสั่งที่ execute เสร็จแล้ว (ไม่รวม halt หลังพิมพ์สถานะสุดท้าย)
         instrCount++;
+        if (instrCount > modeConfig.instructionCap) {
+            std::fprintf(stderr, "error: instruction cap %lld exceeded without halt for task '%s'\n",
+                         modeConfig.instructionCap, modeConfig.name.c_str());
+            return 1;
+        }
     }
 
     // ไม่ควรมาถึงตรงนี้
