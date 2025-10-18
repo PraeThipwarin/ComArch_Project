@@ -1,18 +1,18 @@
-        lw      0      1      n          # n = 13
-        lw      0      2      d          # d = 4
-        lw      0      6      addr       # load divide function address
-        jalr    6      7                 # call divide
-        halt
+        lw      0      1      end      ; reg1 = 13 (dividend)
+        lw      0      2      sor      ; reg2 = 4  (divisor)
+        lw      0      6      addr     ; reg6 = address ของ loop
+        add     0      0      3        ; reg3 = 0 (result)
+        nand    2      2      4        ; reg4 = ~divisor
+        add     4      6      4        ; reg4 = -divisor (2’s complement)
 
-divide  add     0      0      3          # $3 = 0 (result)
-loop    nand    2      2      4          # $4 = ~r
-        add     4      0      4          # $4 = -r  (2’s complement)
-        add     1      4      1          # n = n - r
-        beq     1      0      done       # if n == 0, end loop
-        add     3      6      3          # result++
-        beq     0      0      loop       # repeat
-done    jalr    7      0                 # return
+loop    add     1      4      1        ; dividend -= divisor
+        beq     1      0      done     ; ถ้าเหลือศูนย์ → จบ
+        beq     1      7      done     ; (optional ถ้าต้องกันติดลบ)
+        add     3      6      3        ; quotient++
+        beq     0      0      loop     ; กลับไปลูป
 
-n       .fill   13
-d       .fill   4
-addr    .fill   divide
+done    halt
+
+end     .fill   13
+sor     .fill   4
+addr    .fill   loop
