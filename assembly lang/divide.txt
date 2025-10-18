@@ -19,10 +19,11 @@ div_loop:
               
 div_done:
 
-	jalr    7      0
+	    jalr    7      0
 
 dividend    .fill   13
 divisor     .fill   4
 pos1         .fill   1
 div_addr    .fill   divide
+
 funcPtr     .fill   0
