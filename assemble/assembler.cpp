@@ -49,14 +49,14 @@ int findLabelAddress(ofstream &fout, const vector<Label> &labels, const string &
     for (auto &l : labels)
         if (l.name == name)
             return l.address;
-    printError(fout, "❌ error: undefined label \"" + name + "\"\n");
+    printError(fout, "error: undefined label \"" + name + "\"\n");
     return -1;
 }
 
 void checkRegRange(ofstream &fout, int r, const string &which, int line)
 {
     if (r < 0 || r > 7)
-        printError(fout, "❌ error: register out of range (" + which + "=" + to_string(r) +
+        printError(fout, "error: register out of range (" + which + "=" + to_string(r) +
                              ") at line " + to_string(line) + "\n");
 }
 
@@ -72,7 +72,7 @@ int main(int argc, char *argv[])
     ofstream fout(argv[2]);
     if (!fin || !fout)
     {
-        cerr << "❌ error: cannot open file\n";
+        cerr << "error: cannot open file\n";
         return 1;
     }
 
@@ -106,10 +106,10 @@ int main(int argc, char *argv[])
         {
 
             if (!isValidLabelName(first))
-                printError(fout, "❌ error: invalid label name \"" + first + "\"\n");
+                printError(fout, "error: invalid label name \"" + first + "\"\n");
             for (auto &l : labels)
                 if (l.name == first)
-                    printError(fout, "❌ error: duplicate label \"" + first + "\"\n");
+                    printError(fout, "error: duplicate label \"" + first + "\"\n");
             labels.push_back({first, i});
         }
     }
@@ -174,7 +174,7 @@ int main(int argc, char *argv[])
         else if (opcode == ".fill")
             op = -2;
         else
-            printError(fout, "❌ error: invalid opcode \"" + opcode + "\" at line " + to_string(i) + "\n");
+            printError(fout, "error: invalid opcode \"" + opcode + "\" at line " + to_string(i) + "\n");
 
         if (op == -2)
         { // .fill
@@ -217,7 +217,7 @@ int main(int argc, char *argv[])
                         offset = labelAddr;
                 }
                 if (offset < -32768 || offset > 32767)
-                    printError(fout, "❌ error: offsetField out of range at line " + to_string(i) + "\n");
+                    printError(fout, "error: offsetField out of range at line " + to_string(i) + "\n");
                 offset &= 0xFFFF;
                 machineCode = (op << 22) | (regA << 19) | (regB << 16) | offset;
             }
@@ -236,7 +236,7 @@ int main(int argc, char *argv[])
         }
         catch (...)
         {
-            printError(fout, "❌ error: invalid operand in line " + to_string(i) + "\n");
+            printError(fout, "error: invalid operand in line " + to_string(i) + "\n");
         }
         cout << "(address " << i << "): " << machineCode
              << " (hex 0x" << hex << uppercase << machineCode << dec << ")\n";
