@@ -52,6 +52,13 @@ static inline void assertMemInRange(int addr) {
     }
 }
 
+static inline void assertPCInProgram(int pc, int numMemory) {
+    if (pc < 0 || pc >= numMemory) {
+        std::fprintf(stderr, "error: pc %d out of loaded program [0..%d]\n", pc, numMemory - 1);
+        std::exit(1);
+    }
+}
+
 int main(int argc, char *argv[])
 {
     if (argc != 2) {
@@ -101,7 +108,7 @@ int main(int argc, char *argv[])
         printState(&state);
 
         // Fetch
-        assertMemInRange(state.pc);
+        assertPCInProgram(state.pc, state.numMemory);
         int instr = state.mem[state.pc];
 
         // Decode
@@ -153,14 +160,20 @@ int main(int argc, char *argv[])
                 } else {
                     state.pc += 1;
                 }
+                assertPCInProgram(state.pc, state.numMemory);
                 break;
             }
             case 5: { // jalr (J-type)
-                // เก็บ pc+1 ลง reg[rt] (ต้องเก็บก่อนแม้ rs==rt) แล้ว pc = reg[rs]
                 int nextPC = state.pc + 1;
-                int target = state.reg[rs];
-                state.reg[rt] = nextPC;
-                state.pc = target;
+                if (rs == rt) {
+                    state.reg[rt] = nextPC;   // save return address
+                    state.pc      = nextPC;   // jump to PC+1
+                } else {
+                    int target    = state.reg[rs];
+                    state.reg[rt] = nextPC;   // save return address
+                    state.pc      = target;   // jump to reg[rs]
+                }
+                assertPCInProgram(state.pc, state.numMemory);
                 break;
             }
             case 6: { // halt (O-type)
