@@ -176,31 +176,6 @@ int main(int argc, char *argv[])
         else
             printError(fout, "error: invalid opcode \"" + opcode + "\" at line " + to_string(i) + "\n");
 
-        // argument count check
-        auto countArgs = [&](void) -> int
-        {
-            return (int)!arg0.empty() + (int)!arg1.empty() + (int)!arg2.empty();
-        };
-        int expectedArgs = 0;
-        if (op <= 1)
-            expectedArgs = 3; // add, nand
-        else if (op >= 2 && op <= 4)
-            expectedArgs = 3; // lw, sw, beq
-        else if (op == 5)
-            expectedArgs = 2; // jalr
-        else if (op >= 6)
-            expectedArgs = 0; // halt, noop
-        else if (op == -2)
-            expectedArgs = 1; // .fill
-
-        if (countArgs() != expectedArgs)
-        {
-            printError(fout, "error: wrong number of arguments for \"" + opcode +
-                                 "\" at line " + to_string(i) +
-                                 " (expected " + to_string(expectedArgs) +
-                                 ", got " + to_string(countArgs()) + ")\n");
-        }
-
         if (op == -2)
         { // .fill
             int value;
