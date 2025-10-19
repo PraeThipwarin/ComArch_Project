@@ -1,8 +1,11 @@
 # ComArch_Project
 
-วิธีคอมไพล์และรันไฟล์ assembler.cpp
-คอมไพล์: g++ -std=c++17 -O2 assembler.cpp -o assembler.exe
-รัน: ./assembler.exe .\test\test.txt program_rs.txt
+====== วิธีคอมไพล์และรันไฟล์ assembler.cpp ======
+คอมไพล์: g++ -O2 <ชื่อไฟล์ที่จะคอมไพล์> -o <output file.exe>
+ex : g++ -std=c++17 -O2 assembler.cpp -o assembler.exe
+
+รัน: ./<output file.exe> <input file(assembly)> <output file(machine code)>
+ex: ./assembler.exe .\test\mul.asm program_rs.mc
 
 วิธีคอมไพล์และรันไฟล์ simulator.cpp
 คอมไพล์: g++ -std=c++17 -O2 simulator.cpp -o simulator
