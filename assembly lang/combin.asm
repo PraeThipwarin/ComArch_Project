@@ -37,9 +37,9 @@ done    nand    0       0       4
         add     5       4       5       
         lw      5       7       0          
         jalr    7       0                                   
-n         .fill   7
-r         .fill   3
-pos1      .fill   1
-addrC     .fill   comb
-Stack .fill   stack
-stack     .fill   0
+n       .fill   7
+r       .fill   3
+pos1    .fill   1
+addrC   .fill   comb
+Stack   .fill   stack
+stack   .fill   0
