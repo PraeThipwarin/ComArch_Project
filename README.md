@@ -6,7 +6,7 @@ ex : g++ -std=c++17 -O2 assembler.cpp -o assembler.exe
 
 รัน: ./<output file.exe> <input file(assembly)> <output file(machine code)>
 ex: ./assembler.exe .\test\mul.asm program_rs.mc
-
+    ./assembler.exe '..\assembly_lang\divide.asm' '..\output\div-test.mc'
 วิธีคอมไพล์และรันไฟล์ simulator.cpp
 คอมไพล์: g++ -std=c++17 -O2 simulator.cpp -o simulator
 รัน: 
