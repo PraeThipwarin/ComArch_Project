@@ -1,4 +1,4 @@
-				lw 0 1 base
+	lw      0 1 base
         lw      0 2 exp
         beq     2 0 isExp0
         
