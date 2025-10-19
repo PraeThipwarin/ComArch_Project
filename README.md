@@ -13,3 +13,5 @@ ex: ./assembler.exe .\test\mul.asm program_rs.mc
   1) โหมดปกติ: ./simulator machine-code/test-class.txt
   2) โหมดคูณ (--task=multiply): ./simulator --task=multiply machine-code/test-mul.txt
   3) โหมด combination (--task=comb): ./simulator --task=comb machine-code/test-combi.txt
+
+รายงาน : https://drive.google.com/file/d/1--QqTLCq7VPYFdX2btMzY3zh0sv2mYcD/view?usp=sharing
