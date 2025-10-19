@@ -71,6 +71,9 @@ int main(int argc, char *argv[])
 
     // 1) โหลดไฟล์ machine code ทั้งหมดเข้าสู่ memory
     state.numMemory = 0;
+    for (int i = 0; i < NUMMEMORY; ++i) {
+        state.mem[i] = 0;
+    }
     while (std::fgets(line, MAXLINELENGTH, filePtr) != nullptr) {
         // ข้ามบรรทัดว่าง
         int tmp;
