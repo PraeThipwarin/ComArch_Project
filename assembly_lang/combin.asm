@@ -11,10 +11,8 @@ comb    sw      5       7       0      //push return addr -> stack
         add     5       6       5      //stack++
         sw      5       2       0      //push r -> stack
         add     5       6       5      //stack++
-                //basecase
         beq     2       0       base   [// basecase เอาไว้เช็คว่า n==r, r==0 ? เป็น basecase ไว้ออก loop
         beq     1       2       base    ] 
-                //recursive loop
         nand    0       0       3      // reg[3] = -1
         add     1       3       1      // made n = n-1 comb(n-1, r)   
         lw      0       4       addrC  // load reg[4] == addr ของ comb
@@ -25,7 +23,6 @@ comb    sw      5       7       0      //push return addr -> stack
         add     2       3       2      // r-1   
         lw      0       4       addrC  // load address comb กลับเข้า reg[4]
         jalr    4       7              // jump ไปทำ comb(n-1,r-1)
-                //combi result
         nand    0       0       4      
         add     5       4       5       // pop stack เพื่อให้มันชี้ไปที่ result1
         lw      5       4       0       // load Result 1 เข้า reg[4]
